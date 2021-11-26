@@ -12,7 +12,7 @@ import (
 )
 
 const size = 300
-const expected = 20
+const expected = 50
 
 const dataName = "data.txt"
 
@@ -26,6 +26,29 @@ type Cell struct {
 	Id         int
 	Neighbours []*Cell
 	IsUseful   bool
+}
+
+func (g *Graph) CliqueGenerate(size int) {
+	nodes := make([]int, 0)
+	for i := 0; len(nodes) < size; i++ {
+		randNode := rand.Intn(size)
+		isOk := true
+		for _, v := range nodes {
+			if v == randNode {
+				isOk = false
+				break
+			}
+		}
+		if isOk {
+			nodes = append(nodes, randNode)
+		}
+	}
+	for _, v1 := range nodes {
+		for _, v2 := range nodes {
+			g.Matrix[v1][v2] = true
+			g.Matrix[v2][v1] = true
+		}
+	}
 }
 
 func (c *Cell) GetRandomNeighbour() *Cell {

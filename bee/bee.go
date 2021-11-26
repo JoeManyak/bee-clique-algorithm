@@ -10,7 +10,7 @@ import (
 const scout = 1000
 
 //const worker = 30
-const step = 10000
+const step = 5000
 const bestAreaWorkers = 20
 const goodAreaWorkers = 5
 const bestAreas = 10
@@ -35,8 +35,13 @@ func (b *Bee) GetRandomClique() {
 	b.Area = area.Area{
 		Clique: []area.CellHelper{},
 	}
+	randCell := b.Home.Graph.GetRandomCell()
+	b.Area.Clique = append(b.Area.Clique, area.CellHelper{
+		Cell:      randCell,
+		CellPrice: 0,
+	})
 	for len(b.Area.Clique) < b.Home.CliqueSize {
-		randCell := b.Home.Graph.GetRandomCell()
+		randCell = randCell.GetRandomNeighbour()
 		isUsed := false
 		for _, v := range b.Area.Clique {
 			if v.Cell == randCell {

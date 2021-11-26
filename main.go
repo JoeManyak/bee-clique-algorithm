@@ -8,15 +8,18 @@ import (
 	"time"
 )
 
+const cliqueSize = 8
+
 func main() {
 	rand.Seed(time.Now().UnixNano())
 	g := graph.Generate()
+	g.CliqueGenerate(cliqueSize)
 	g.Save()
 	g.CellGenerate()
-	g.SetUseful(3)
+	g.SetUseful(cliqueSize)
 	h := bee.Hive{
 		Graph:      g,
-		CliqueSize: 4,
+		CliqueSize: cliqueSize,
 	}
 	fmt.Println("finished:", h.Solve())
 	//g.Show()
